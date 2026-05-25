@@ -5,7 +5,7 @@ import { TransmitForm } from "../components/TransmitForm";
 import { NetworkStatus } from "../components/NetworkStatus";
 
 export default function Home() {
-  const { emails, form, handleChange, handleSubmit } = useEmails();
+  const { emails, form, loading, error, handleChange, handleSubmit } = useEmails();
 
   return (
     <div className="min-h-screen bg-black text-cyan-300 overflow-hidden relative">
@@ -14,10 +14,10 @@ export default function Home() {
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-size-[40px_40px]" />
 
       <div className="relative z-10 p-8 max-w-7xl mx-auto">
-        <ConsoleHeader />
+        <ConsoleHeader systemStatus={error ? "UPLINK ERROR" : loading ? "SYNCING..." : "SYSTEM ONLINE"} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <EmailList emails={emails} />
+          <EmailList emails={emails} loading={loading} error={error} />
 
           <div className="rounded-3xl border border-fuchsia-500/40 bg-fuchsia-500/5 backdrop-blur-xl shadow-[0_0_35px_rgba(255,0,255,0.18)] p-6">
             <div className="mb-8">
@@ -35,7 +35,10 @@ export default function Home() {
               onSubmit={handleSubmit} 
             />
 
-            <NetworkStatus />
+            <NetworkStatus 
+              status={error ? "Offline" : loading ? "Syncing" : "Stable"}
+              efficiency={error ? "0%" : loading ? "45%" : "99%"}
+            />
           </div>
         </div>
       </div>

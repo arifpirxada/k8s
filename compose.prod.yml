@@ -6,6 +6,8 @@ services:
     depends_on:
       - server
     restart: unless-stopped
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
     networks:
       - k8scomposenet
 
@@ -15,6 +17,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      CLIENT_URL: ${CLIENT_URL}
       NODE_ENV: production
     depends_on:
       - mongodb

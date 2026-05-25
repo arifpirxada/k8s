@@ -28,7 +28,12 @@ DATABASE_URL=mongodb://username:password@mongodb:27017/dbname?authSource=admin
 DATABASE_NAME=dbname
 MONGO_USER=username
 MONGO_PASSWORD=password
+
+VITE_API_URL=http://localhost:3000
+CLIENT_URL=http://localhost:5173
 ```
+
+Also create `.env` files in client and server. `env.example` is provided.
 
 # Requirements
 
