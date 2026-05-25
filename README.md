@@ -1,10 +1,26 @@
 # Overview
 
-This repository serves as a reference implementation for Docker and Kubernetes deployments.
+This project demonstrates how to deploy a full-stack application using Docker Compose for local development and Kubernetes for production environments.
 
-# Initial step
+**Components:**
+- Client (frontend)
+- Server (backend API)
+- MongoDB database
 
-Configure .env in project root
+## Project Structure Overview
+
+   
+├── client/   
+├── server/   
+├── k8s-config/   
+├── compose.prod.yml   
+└── .env
+
+# Setup
+
+Create a `.env` file in the project root, `env.example` as reference
+
+Then update the values:
 
 ```bash
 DATABASE_URL=mongodb://username:password@mongodb:27017/dbname?authSource=admin
@@ -13,6 +29,17 @@ DATABASE_NAME=dbname
 MONGO_USER=username
 MONGO_PASSWORD=password
 ```
+
+# Requirements
+
+- Docker
+- Docker Compose
+
+For Kubernetes:
+
+- kubectl
+- Minikube
+
 
 # Development
 
@@ -50,7 +77,7 @@ docker push username/k8s-server:1.0.2
 docker push username/k8s-server:stable
 ```
 
-## Two Option
+## Deployment Options
 
 ### 1. Run using docker compose on server
 
@@ -60,4 +87,33 @@ docker compose -f compose.prod.yml up -d
 
 ### 2. Kubernetes
 
-to be updated
+Requirements to run locally: minikube and kubectl installed.
+
+1. Create `k8s-config/secret.yml`
+    - Copy template content from `k8s-config/secret.example.yml` and paste into `k8s-config/secret.yml`
+    - Fill the secrets
+
+2. Apply k8s yaml config files
+
+```bash
+cd k8s-config
+
+minikube start
+
+kubectl apply -f secret.yml
+
+kubectl apply -f mongo-pvc.yml
+
+kubectl apply -f mongo.yml
+
+kubectl apply -f server.yml
+
+kubectl apply -f client.yml
+```
+
+View in browser
+
+```bash
+minikube service k8s-client-service
+```
+
